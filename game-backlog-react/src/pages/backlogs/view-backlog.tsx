@@ -1,7 +1,7 @@
 import BacklogFormDialog from "@/components/dialogs/BacklogFormDialog";
 import Loading from "@/components/utils/Loading";
 import useBacklog from "@/hooks/useBacklog";
-import { Edit, Ellipsis, Trash2Icon } from "lucide-react";
+import { Edit, Trash2Icon } from "lucide-react";
 import { Link, Navigate, Outlet, useLocation, useParams } from "react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
@@ -65,7 +65,7 @@ export default function ViewBacklog() {
       </div>
 
       <Tabs defaultValue={currentTab} className="w-full">
-        <TabsList className="w-full">
+        <TabsList>
           {tabs.map((tab) => {
             return (
               <TabsTrigger key={tab.value} value={tab.value} asChild>
