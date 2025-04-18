@@ -1,18 +1,17 @@
-import PublicNavbar from "@/components/layouts/PublicNavbar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Input } from "@/components/ui/input";
 import { UserCredentials } from "@/form-schemas/User";
 import useAccount from "@/hooks/useAccount";
-import { AlertCircle } from "lucide-react";
 import { useSession } from "@/contexts/SessionProvider";
-import { Navigate } from "react-router";
+import { Link, Navigate } from "react-router";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { AlertCircle, Loader2 } from "lucide-react";
 
 export default function SignIn() {
   const session = useSession();
-  
+
   const { signInForm, signIn } = useAccount();
   const form = signInForm();
 
@@ -26,14 +25,13 @@ export default function SignIn() {
 
   return (
     <div className="flex items-center justify-center w-screen h-screen bg-background relative">
-      <PublicNavbar />
-      <Card className="w-[350px]">
+      <Card className="md:w-[350px] w-full md:mx-0 mx-4">
         <CardHeader>
           <CardTitle>Sign in</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
                 name="email"
@@ -42,8 +40,9 @@ export default function SignIn() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input type="email" placeholder="Email" {...field} />
+                        <Input type="email" placeholder="Email" {...field} disabled={form.formState.isSubmitting} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   );
                 }}
@@ -56,8 +55,9 @@ export default function SignIn() {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input type="password" placeholder="Password" {...field} />
+                        <Input type="password" placeholder="Password" {...field} disabled={form.formState.isSubmitting} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   );
                 }}
@@ -69,7 +69,14 @@ export default function SignIn() {
                   <AlertDescription>{form.formState.errors.root?.message}</AlertDescription>
                 </Alert>
               ) : null}
-              <Button type="submit">Sign in</Button>
+              <div className="flex flex-col gap-2">
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting && <Loader2 className="animate-spin" />}Sign in
+                </Button>
+                <Button type="submit" variant="link" asChild>
+                  <Link to="/account/sign-up">I don't have an account</Link>
+                </Button>
+              </div>
             </form>
           </Form>
         </CardContent>

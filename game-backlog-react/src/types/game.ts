@@ -24,7 +24,6 @@ export type Game = {
   metacritic: number;
   playtime: number;
   reviews_count: number;
-  
 };
 
 export interface GameList extends Pagination {

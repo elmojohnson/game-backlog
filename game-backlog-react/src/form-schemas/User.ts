@@ -8,7 +8,8 @@ export const UserCredentialsSchema = object({
 export type UserCredentials = InferType<typeof UserCredentialsSchema>;
 
 export const UserSchema = UserCredentialsSchema.shape({
-  name: string().required("Name is required"),
+  first_name: string().required("First name is required"),
+  last_name: string().required("Last name is required"),
 });
 
 export type User = InferType<typeof UserSchema>;

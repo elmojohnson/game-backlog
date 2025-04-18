@@ -63,7 +63,7 @@ createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <Toaster position="bottom-center" />
+      <Toaster position="bottom-center" richColors />
     </QueryClientProvider>
   </ThemeProvider>
 );

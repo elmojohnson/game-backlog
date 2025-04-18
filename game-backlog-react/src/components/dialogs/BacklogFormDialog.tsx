@@ -13,7 +13,7 @@ import { BacklogSchema } from "@/form-schemas/Backlog";
 import { useForm, UseFormSetError } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "../ui/input";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Textarea } from "../ui/textarea";
 import { Backlog } from "@/types/backlog";
 import { useEffect, useState } from "react";
@@ -43,7 +43,7 @@ export default function BacklogFormDialog({ title, buttonTriggerText, buttonTrig
     },
   });
 
-  function onSubmit(values: InferType<typeof BacklogSchema>) {
+  async function onSubmit(values: InferType<typeof BacklogSchema>) {
     formSubmit(values, form.setError, backlogData?.id);
     setOpen(false)
   }
@@ -51,7 +51,7 @@ export default function BacklogFormDialog({ title, buttonTriggerText, buttonTrig
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
+        <Button variant="outline">
           {buttonTriggerIcon}
           {buttonTriggerText}
         </Button>
@@ -72,7 +72,7 @@ export default function BacklogFormDialog({ title, buttonTriggerText, buttonTrig
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input type="text" placeholder="Name" {...field} />
+                        <Input type="text" placeholder="Name" {...field} disabled={form.formState.isSubmitting} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -88,7 +88,7 @@ export default function BacklogFormDialog({ title, buttonTriggerText, buttonTrig
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Description" {...field} />
+                        <Textarea placeholder="Description" {...field} disabled={form.formState.isSubmitting} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -102,7 +102,7 @@ export default function BacklogFormDialog({ title, buttonTriggerText, buttonTrig
                   <AlertDescription>{form.formState.errors.root?.message}</AlertDescription>
                 </Alert>
               ) : null}
-              <Button type="submit" disabled={form.formState.isSubmitting}>{submitButtonText}</Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>{form.formState.isSubmitting && <Loader2 className="animate-spin" />}{submitButtonText}</Button>
             </form>
           </Form>
       </DialogContent>

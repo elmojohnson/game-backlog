@@ -1,7 +1,7 @@
 import BacklogFormDialog from "@/components/dialogs/BacklogFormDialog";
 import Loading from "@/components/utils/Loading";
 import useBacklog from "@/hooks/useBacklog";
-import { Edit, Trash2Icon } from "lucide-react";
+import { Edit, Ellipsis, Trash2Icon } from "lucide-react";
 import { Link, Navigate, Outlet, useLocation, useParams } from "react-router";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ export default function ViewBacklog() {
   let { id } = useParams();
   const location = useLocation();
   const [currentTab, setCurrentTab] = useState<string>("backlog");
-  const { getBacklogById, updateBacklog } = useBacklog();
+  const { getBacklogById, updateBacklog, deleteBacklog } = useBacklog();
   const { data: backlog, status } = getBacklogById(parseInt(id!));
 
   const tabs = [
@@ -45,19 +45,19 @@ export default function ViewBacklog() {
 
   return (
     <div>
-      <div className="mb-4">
-        <h1 className="font-bold text-3xl">{backlog?.name}</h1>
+      <div className="py-12">
+        <h1 className="font-bold text-5xl">{backlog?.name}</h1>
         <p className="line-clamp-3 mb-4">{backlog?.description}</p>
         <div className="flex items-center gap-2">
           <BacklogFormDialog
             title="Edit backlog details"
-            buttonTriggerText="Backlog"
+            buttonTriggerText="Edit"
             buttonTriggerIcon={<Edit />}
             backlogData={backlog}
             formSubmit={updateBacklog}
             submitButtonText="Update"
           />
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => deleteBacklog(parseInt(id!))}>
             <Trash2Icon />
             Delete
           </Button>

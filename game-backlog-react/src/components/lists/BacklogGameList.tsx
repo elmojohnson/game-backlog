@@ -9,7 +9,7 @@ export default function BacklogGameList({ data }: { data: InfiniteData<Paginated
   }
   
   return (
-    <div className="grid grid-cols-1 gap-4 mb-4">
+    <div className="grid md:grid-cols-2 grid-cols-1 gap-4 mb-4">
       {data?.pages.map((group, i) => (
         <React.Fragment key={i}>
           {group?.data?.map((game) => {

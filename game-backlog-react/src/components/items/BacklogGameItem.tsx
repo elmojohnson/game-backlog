@@ -2,29 +2,27 @@ import { BacklogGame } from "@/types/backlog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Game } from "@/types/game";
 import { Button } from "../ui/button";
-import { NotepadText, Trash2, X } from "lucide-react";
+import { NotepadText, X } from "lucide-react";
 
 export default function BacklogGameItem({ game }: { game: BacklogGame }) {
   const gameInfo: Game = JSON.parse(game.game_metadata);
 
   return (
-    <Card className="max-h-[100px] !py-0 overflow-hidden flex flex-row items-center !gap-0">
+    <Card className="flex sm:flex-row flex-col gap-4 !p-5">
       <div
-        className="w-[240px] h-[100px] bg-cover bg-center bg-no-repeat"
+        className="sm:w-[250px] w-full sm:h-[120px] h-[250px] bg-cover bg-center bg-no-repeat rounded-lg"
         style={{ backgroundImage: `url(${gameInfo.background_image})` }}
       />
-      <CardHeader className="w-full">
-        <CardTitle className="line-clamp-2">{game.name}</CardTitle>
-        <CardDescription className="text-sm">{gameInfo.genres.map((genre) => genre.name).join(", ")}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex gap-2">
-        <Button size="icon" variant="secondary">
-          <NotepadText />
-        </Button>
-        <Button size="icon" variant="outline">
-          <X />
-        </Button>
-      </CardContent>
+      <div className="w-full flex flex-col justify-between gap-3">
+        <div>
+          <CardTitle className="line-clamp-2">{game.name}</CardTitle>
+          <CardDescription>{gameInfo.genres.map((genre) => genre.name).join(", ")}</CardDescription>
+        </div>
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline"><NotepadText />Note</Button>
+          <Button size="sm" variant="outline"><X />Remove</Button>
+        </div>
+      </div>
     </Card>
   );
 }

@@ -2,6 +2,7 @@ import { useSession } from "@/contexts/SessionProvider";
 import { BacklogSchema } from "@/form-schemas/Backlog";
 import { supabase } from "@/lib/supabase";
 import { Backlog, BacklogGame, PaginatedBacklogGames, PaginatinatedBacklog } from "@/types/backlog";
+import { Game } from "@/types/game";
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UseFormSetError } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -52,14 +53,10 @@ export default function useBacklog() {
 
   // Single Backlog
   async function queryBacklogById(id: number): Promise<Backlog | undefined> {
-    const { data, error } = await supabase
-      .from("backlogs")
-      .select("*")
-      .eq("id", id)
-      .overrideTypes<Array<Backlog>, { merge: false }>();
+    const { data, error } = await supabase.from("backlogs").select("*").eq("id", id).overrideTypes<Array<Backlog>, { merge: false }>();
 
     if (error) {
-      toast("There was an error loading the backlog");
+      toast.error("There was an error loading the backlog");
       navigate("/");
     }
 
@@ -115,15 +112,8 @@ export default function useBacklog() {
   }
 
   // Create Backlog
-  async function createBacklog(
-    { name, description }: InferType<typeof BacklogSchema>,
-    setError: UseFormSetError<InferType<typeof BacklogSchema>>
-  ) {
-    const { count } = await supabase
-      .from("backlogs")
-      .select("name", { count: "exact" })
-      .eq("user_id", session?.user?.id)
-      .eq("name", name);
+  async function createBacklog({ name, description }: InferType<typeof BacklogSchema>, setError: UseFormSetError<InferType<typeof BacklogSchema>>) {
+    const { count } = await supabase.from("backlogs").select("name", { count: "exact" }).eq("user_id", session?.user?.id).eq("name", name);
 
     if (count) {
       setError("root", {
@@ -165,9 +155,59 @@ export default function useBacklog() {
       });
     } else {
       queryClient.invalidateQueries({ queryKey: ["backlog", id] });
-      toast("Backlog details updated!");
+      toast.success("Backlog details updated!");
     }
   }
 
-  return { getBacklogList, getBacklogById, getBacklogGames, createBacklog, updateBacklog };
+  // Delete backlog
+  async function deleteBacklog(id: number) {
+    const { error, data } = await supabase.from("backlogs").delete().eq("id", id).select();
+
+    if(error) {
+      toast.error("There was an error deleting the backlog. Please try again.")
+    }
+
+    if(data) {
+      toast.success("Backlog deleted!");
+      queryClient.invalidateQueries({ queryKey: ["backlogList"] });
+      navigate("/");
+    }
+  }
+
+  // Add game to backlog
+  async function addGameToBacklog(backlogId: number, game: Game) {
+    const { count } = await supabase
+      .from("games")
+      .select("name", { count: "exact" })
+      .eq("name", game.name)
+      .eq("user_id", session?.user?.id)
+      .eq("backlog_id", backlogId);
+
+    if (count) {
+      toast.warning("Game is already in the backlog");
+    } else {
+      const { data, error } = await supabase
+        .from("games")
+        .upsert({ name: game.name, game_metadata: JSON.stringify(game), user_id: session?.user.id, backlog_id: backlogId })
+        .select("id")
+        .overrideTypes<Array<BacklogGame>, { merge: false }>();
+
+      if (error) {
+        console.log(error);
+        toast.error("There was an error adding it to the backlog. Please try again.");
+      }
+
+      if (data) {
+        toast.success("Game added!");
+        queryClient.invalidateQueries({ queryKey: ["backlogGames", backlogId] });
+      }
+    }
+  }
+
+  // Remove game from backlog
+  async function removeGameFromBacklog(gameId: number) {
+
+  }
+
+  return { getBacklogList, getBacklogById, getBacklogGames, createBacklog, updateBacklog, deleteBacklog, addGameToBacklog };
 }
