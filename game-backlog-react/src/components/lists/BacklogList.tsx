@@ -1,11 +1,12 @@
+import React from "react";
 import { InfiniteData } from "@tanstack/react-query";
 import { PaginatinatedBacklog } from "@/types/backlog";
-import React from "react";
+import NoData from "../utils/NoData";
 import BacklogItem from "../items/BacklogItem";
 
 export default function BacklogList({ data }: { data: InfiniteData<PaginatinatedBacklog, unknown> | undefined }) {
   if(!data?.pages[0].count) {
-    return <p>No data</p>
+    return <NoData message="Backlog list is empty" />
   }
 
   return (

@@ -1,6 +1,7 @@
 import { BacklogGame } from "@/types/backlog";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Game } from "@/types/game";
+
+import { Card, CardDescription, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { NotepadText, X } from "lucide-react";
 

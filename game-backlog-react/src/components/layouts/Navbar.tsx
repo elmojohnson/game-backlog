@@ -1,20 +1,12 @@
+import { useState } from "react";
+import { Link } from "react-router";
 import { appTitle, links } from "@/app-settings";
 import { ThemeToggle } from "../utils/ThemeToggle";
-import { Link } from "react-router";
 import { Button, buttonVariants } from "../ui/button";
 import { Menu } from "lucide-react";
-import { useState } from "react";
 
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -34,12 +26,7 @@ export default function Navbar() {
           <div className="px-4 flex flex-col gap-4">
             {links.map((link) => {
               return (
-                <Link
-                  key={link.title}
-                  to={link.href}
-                  className={buttonVariants({ variant: "secondary" })}
-                  onClick={() => setOpen(false)}
-                >
+                <Link key={link.title} to={link.href} className={buttonVariants({ variant: "secondary" })} onClick={() => setOpen(false)}>
                   {link.title}
                 </Link>
               );

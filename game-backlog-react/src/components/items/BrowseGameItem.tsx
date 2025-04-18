@@ -1,9 +1,9 @@
+import { useParams } from "react-router";
+import useBacklog from "@/hooks/useBacklog";
 import { Game } from "@/types/game";
 import { Card, CardDescription, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
-import { useParams } from "react-router";
-import useBacklog from "@/hooks/useBacklog";
 
 export default function BrowseGameItem({ game }: { game: Game }) {
   const { id } = useParams();
