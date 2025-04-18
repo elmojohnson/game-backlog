@@ -1,13 +1,15 @@
+import { useNavigate } from "react-router";
 import { useSession } from "@/contexts/SessionProvider";
-import { BacklogSchema } from "@/form-schemas/Backlog";
 import { supabase } from "@/lib/supabase";
+
+import { UseFormSetError } from "react-hook-form";
+import { BacklogSchema } from "@/form-schemas/Backlog";
+import { InferType } from "yup";
 import { Backlog, BacklogGame, PaginatedBacklogGames, PaginatinatedBacklog } from "@/types/backlog";
 import { Game } from "@/types/game";
+
 import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { UseFormSetError } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
-import { InferType } from "yup";
 
 export default function useBacklog() {
   const navigate = useNavigate();
@@ -163,11 +165,11 @@ export default function useBacklog() {
   async function deleteBacklog(id: number) {
     const { error, data } = await supabase.from("backlogs").delete().eq("id", id).select();
 
-    if(error) {
-      toast.error("There was an error deleting the backlog. Please try again.")
+    if (error) {
+      toast.error("There was an error deleting the backlog. Please try again.");
     }
 
-    if(data) {
+    if (data) {
       toast.success("Backlog deleted!");
       queryClient.invalidateQueries({ queryKey: ["backlogList"] });
       navigate("/");
@@ -205,9 +207,41 @@ export default function useBacklog() {
   }
 
   // Remove game from backlog
-  async function removeGameFromBacklog(gameId: number) {
+  async function removeGameFromBacklog(id: number) {
+    const { error, data } = await supabase.from("games").delete().eq("id", id).select();
 
+    if (error) {
+      toast.error("There was an error deleting the backlog. Please try again.");
+    }
+
+    if (data) {
+      queryClient.invalidateQueries({ queryKey: ["backlogGames"] });
+    }
   }
 
-  return { getBacklogList, getBacklogById, getBacklogGames, createBacklog, updateBacklog, deleteBacklog, addGameToBacklog };
+  // Add game notes
+  async function updateNote(id: number, note: string) {
+    const { error } = await supabase
+      .from("games")
+      .update({ note, updated_at: new Date().toISOString() })
+      .eq("id", id)
+
+      if(error) {
+        toast.error("There was an error adding your note");
+      } else {
+        toast.success("Note saved!");
+      }
+  }
+
+  return {
+    getBacklogList,
+    getBacklogById,
+    getBacklogGames,
+    createBacklog,
+    updateBacklog,
+    deleteBacklog,
+    addGameToBacklog,
+    removeGameFromBacklog,
+    updateNote,
+  };
 }
