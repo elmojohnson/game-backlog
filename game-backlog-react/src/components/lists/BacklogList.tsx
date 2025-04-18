@@ -1,0 +1,22 @@
+import { InfiniteData } from "@tanstack/react-query";
+import { PaginatinatedBacklog } from "@/types/backlog";
+import React from "react";
+import BacklogItem from "../items/BacklogItem";
+
+export default function BacklogList({ data }: { data: InfiniteData<PaginatinatedBacklog, unknown> | undefined }) {
+  if(!data?.pages[0].count) {
+    return <p>No data</p>
+  }
+
+  return (
+    <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 mb-4">
+      {data?.pages.map((group, i) => (
+        <React.Fragment key={i}>
+          {group?.data?.map((backlog) => {
+            return <BacklogItem key={backlog.id} backlog={backlog} />
+          })}
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
