@@ -1,1 +1,1 @@
-# game-backlog
+# Game Backlog App (name needed uwu)
