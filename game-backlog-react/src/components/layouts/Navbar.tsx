@@ -3,10 +3,10 @@ import { Link } from "react-router";
 import { appTitle, links } from "@/app-settings";
 import { ThemeToggle } from "../utils/ThemeToggle";
 import { Button, buttonVariants } from "../ui/button";
-import { Menu } from "lucide-react";
+import { Gamepad2, Menu } from "lucide-react";
 
 
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -22,6 +22,7 @@ export default function Navbar() {
         <DrawerContent>
           <DrawerHeader className="text-left">
             <DrawerTitle>Menu</DrawerTitle>
+            <DrawerDescription className="sr-only">Menu Drawer</DrawerDescription>
           </DrawerHeader>
           <div className="px-4 flex flex-col gap-4">
             {links.map((link) => {
@@ -49,7 +50,7 @@ export default function Navbar() {
   return (
     <div className="bg-white dark:bg-black sticky top-0 z-50 w-full py-3 shadow">
       <div className="wrapper flex justify-between">
-        <h1 className="font-bold text-2xl">{appTitle}</h1>
+        <Link to="/" className="font-bold text-2xl flex items-center gap-2"><Gamepad2 size={40}/>{appTitle}</Link>
         <div className="md:flex hidden items-center gap-4">
           {links.map((link) => {
             return (

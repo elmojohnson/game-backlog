@@ -1,4 +1,4 @@
-export const appTitle = "Game Backlog";
+export const appTitle = "Backlogr";
 
 export const links = [
   {

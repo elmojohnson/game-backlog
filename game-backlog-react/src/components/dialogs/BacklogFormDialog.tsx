@@ -78,7 +78,7 @@ export default function BacklogFormDialog({ title, buttonTriggerText, buttonTrig
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Description" {...field} disabled={form.formState.isSubmitting} />
+                      <Textarea placeholder="Description" {...field} disabled={form.formState.isSubmitting} className="h-44" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
