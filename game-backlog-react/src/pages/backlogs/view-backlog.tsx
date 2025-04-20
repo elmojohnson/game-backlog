@@ -46,7 +46,7 @@ export default function ViewBacklog() {
   return (
     <div>
       <div className="py-12">
-        <h1 className="font-bold text-5xl">{backlog?.name}</h1>
+        <h1 className="font-bold text-5xl mb-4">{backlog?.name}</h1>
         <p className="line-clamp-3 mb-4">{backlog?.description}</p>
         <div className="flex items-center gap-2">
           <BacklogFormDialog

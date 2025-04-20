@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { Loader2, NotepadText } from "lucide-react";
+import { Loader2, NotepadText, Save } from "lucide-react";
 
 type NoteProps = {
   game: BacklogGame;
@@ -59,7 +59,7 @@ export default function NoteFormDialog({ game, updateNote }: NoteProps) {
                 return (
                   <FormItem>
                     <FormControl>
-                      <Textarea placeholder="Note" {...field} disabled={form.formState.isSubmitting} />
+                      <Textarea placeholder="Note" {...field} disabled={form.formState.isSubmitting} className="h-44" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -67,7 +67,7 @@ export default function NoteFormDialog({ game, updateNote }: NoteProps) {
               }}
             />
             <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting && <Loader2 className="animate-spin" />}
+              {form.formState.isSubmitting ? <Loader2 className="animate-spin" /> : <Save />}
               Save
             </Button>
           </form>

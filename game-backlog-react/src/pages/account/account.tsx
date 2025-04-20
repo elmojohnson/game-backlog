@@ -9,6 +9,7 @@ export default function Account() {
 
   return (
     <div>
+      <h1 className="font-bold text-xl mb-6">Account</h1>
       <Card>
         <CardHeader>
           <CardTitle>
