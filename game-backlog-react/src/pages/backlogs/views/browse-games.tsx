@@ -1,16 +1,13 @@
 import LoadMoreButton from "@/components/buttons/LoadMoreButton";
 import BrowseGameList from "@/components/lists/BrowseGameList";
-import Loading from "@/components/utils/Loading";
+import SkeletonList from "@/components/utils/SkeletonList";
 import useGames from "@/hooks/useGames";
+import { AnimatePresence } from "motion/react";
 import { Navigate } from "react-router";
 
 export default function BrowseGames() {
   const { getGameList } = useGames();
   const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = getGameList();
-
-  if (status === "pending") {
-    return <Loading />;
-  }
 
   if (status === "error") {
     return <Navigate to="/error" />;
@@ -18,7 +15,7 @@ export default function BrowseGames() {
 
   return (
     <div>
-      <BrowseGameList data={data} />
+      <AnimatePresence>{status === "pending" ? <SkeletonList maxRow={2} /> : <BrowseGameList data={data} />}</AnimatePresence>
       <LoadMoreButton hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} fetchNextPage={fetchNextPage} />
     </div>
   );

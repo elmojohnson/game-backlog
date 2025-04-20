@@ -1,27 +1,25 @@
-import LoadMoreButton from '@/components/buttons/LoadMoreButton';
-import BacklogGameList from '@/components/lists/BacklogGameList';
-import Loading from '@/components/utils/Loading';
-import useBacklog from '@/hooks/useBacklog'
-import { Navigate, useParams } from 'react-router';
+import LoadMoreButton from "@/components/buttons/LoadMoreButton";
+import BacklogGameList from "@/components/lists/BacklogGameList";
+import SkeletonList from "@/components/utils/SkeletonList";
+import useBacklog from "@/hooks/useBacklog";
+import { AnimatePresence } from "motion/react";
+import { Navigate, useParams } from "react-router";
 
 export default function BacklogGames() {
-  const {id} = useParams();
+  const { id } = useParams();
   const { getBacklogGames } = useBacklog();
-
   const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage } = getBacklogGames(parseInt(id!));
 
-  if(status === "pending") {
-    return <Loading />
-  }
-
-  if(status === "error") {
-    return <Navigate to="/error" />
+  if (status === "error") {
+    return <Navigate to="/error" />;
   }
 
   return (
     <div className="py-4 flex-col gap-4">
-      <BacklogGameList data={data} />
+      <AnimatePresence>
+        {status === "pending" ? <SkeletonList maxRow={2} /> : <BacklogGameList data={data} />}
+      </AnimatePresence>
       <LoadMoreButton hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} fetchNextPage={fetchNextPage} />
     </div>
-  )
+  );
 }
