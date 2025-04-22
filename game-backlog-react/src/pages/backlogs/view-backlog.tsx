@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 export default function ViewBacklog() {
   let { id } = useParams();
   const location = useLocation();
-  const [currentTab, setCurrentTab] = useState<string>("backlog");
+  const [currentTab, setCurrentTab] = useState<string | null>(null);
   const { getBacklogById, updateBacklog, deleteBacklog } = useBacklog();
   const { data: backlog, status } = getBacklogById(parseInt(id!));
 
@@ -64,7 +64,7 @@ export default function ViewBacklog() {
         </div>
       </div>
 
-      <Tabs defaultValue={currentTab} className="w-full">
+      <Tabs defaultValue={currentTab!} className="w-full">
         <TabsList>
           {tabs.map((tab) => {
             return (
@@ -74,7 +74,7 @@ export default function ViewBacklog() {
             );
           })}
         </TabsList>
-        <TabsContent value={currentTab}>
+        <TabsContent value={currentTab!}>
           <Outlet />
         </TabsContent>
       </Tabs>
