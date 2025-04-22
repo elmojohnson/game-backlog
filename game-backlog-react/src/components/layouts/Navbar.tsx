@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { appTitle, links } from "@/app-settings";
 import { ThemeToggle } from "../utils/ThemeToggle";
 import { Button, buttonVariants } from "../ui/button";
-import { Gamepad2, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 
 
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
