@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { Loader2, NotepadText, Save } from "lucide-react";
+import { Loader2, NotebookText } from "lucide-react";
 
 type NoteProps = {
   game: BacklogGame;
@@ -37,8 +37,8 @@ export default function NoteFormDialog({ game, updateNote }: NoteProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          <NotepadText />
+        <Button size="sm" variant="secondary">
+          <NotebookText />
           Note
         </Button>
       </DialogTrigger>
@@ -67,7 +67,7 @@ export default function NoteFormDialog({ game, updateNote }: NoteProps) {
               }}
             />
             <Button type="submit" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? <Loader2 className="animate-spin" /> : <Save />}
+              {form.formState.isSubmitting && <Loader2 className="animate-spin" />}
               Save
             </Button>
           </form>

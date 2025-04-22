@@ -7,7 +7,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AlertCircle, Gamepad2, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { appTitle } from "@/app-settings";
 
 export default function SignIn() {
@@ -27,8 +27,8 @@ export default function SignIn() {
   return (
     <div className="flex items-center justify-center w-screen h-screen bg-background relative">
       <div>
-        <h1 className="flex items-center justify-center gap-2 text-2xl font-bold mb-4"><Gamepad2 size={40}/>{appTitle}</h1>
-        <Card className="md:w-[350px] w-full md:mx-0 mx-4">
+        <h1 className="flex items-center justify-center gap-2 text-2xl font-bold mb-4">{appTitle}</h1>
+        <Card className="md:w-[350px] w-full">
           <CardHeader>
             <CardTitle>Sign in</CardTitle>
           </CardHeader>

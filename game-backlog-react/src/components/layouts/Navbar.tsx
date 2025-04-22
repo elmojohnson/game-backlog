@@ -50,7 +50,7 @@ export default function Navbar() {
   return (
     <div className="bg-white dark:bg-black sticky top-0 z-50 w-full py-3 shadow">
       <div className="wrapper flex justify-between">
-        <Link to="/" className="font-bold text-2xl flex items-center gap-2"><Gamepad2 size={40}/>{appTitle}</Link>
+        <Link to="/" className="font-bold text-2xl">{appTitle}</Link>
         <div className="md:flex hidden items-center gap-4">
           {links.map((link) => {
             return (
