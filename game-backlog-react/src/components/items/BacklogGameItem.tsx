@@ -25,7 +25,7 @@ export default function BacklogGameItem({ game }: { game: BacklogGame }) {
       game={gameInfo}
       actionButtons={[
         <NoteFormDialog game={game} updateNote={updateNote} />,
-        <Button size="sm" variant="outline" onClick={handleRemoveFromBacklog} disabled={isRemoving}>
+        <Button size="sm" variant="secondary" onClick={handleRemoveFromBacklog} disabled={isRemoving}>
           {isRemoving ? <Loader2 className="animate-spin" /> : <X />}
           Remove
         </Button>,

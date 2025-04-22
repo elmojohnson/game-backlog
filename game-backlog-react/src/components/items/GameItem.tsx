@@ -1,6 +1,8 @@
 import React from "react";
 import { Game } from "@/types/game";
 import { Card, CardDescription, CardTitle } from "../ui/card";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 type GameItemProps = {
   game: Game;
@@ -10,9 +12,15 @@ type GameItemProps = {
 export default function GameItem({ game, actionButtons }: GameItemProps) {
   return (
     <Card className="flex sm:flex-row flex-col gap-4 !p-5">
-      <div className="bg-red-300 sm:w-[250px] w-full sm:h-[120px] h-[250px] overflow-hidden rounded-lg">
-        <img src={game.background_image} className="w-full h-full object-cover inline-flex" />
-      </div>
+      <LazyLoadImage
+        alt={game.name}
+        src={game.background_image}
+        effect="blur"
+        wrapperClassName="sm:w-[250px] w-full sm:h-[120px] h-[250px] overflow-hidden rounded-lg"
+        className="w-full h-full object-cover inline-flex"
+        threshold={200}
+        useIntersectionObserver
+      />
 
       <div className="w-full flex flex-col justify-between gap-3">
         <div>
@@ -20,7 +28,7 @@ export default function GameItem({ game, actionButtons }: GameItemProps) {
           <CardDescription>{game.genres.map((genre) => genre.name).join(", ")}</CardDescription>
         </div>
         {actionButtons ? (
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-end">
             {actionButtons.map((button, i) => {
               return <React.Fragment key={i}>{button}</React.Fragment>;
             })}

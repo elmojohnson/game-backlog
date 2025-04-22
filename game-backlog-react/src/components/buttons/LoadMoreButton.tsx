@@ -13,7 +13,7 @@ export default function LoadMoreButton({ hasNextPage, isFetchingNextPage, fetchN
   }
 
   return (
-    <Button onClick={fetchNextPage} variant="secondary" className="w-full" disabled={!hasNextPage || isFetchingNextPage}>
+    <Button onClick={fetchNextPage} variant="secondary" className="w-full mb-12" disabled={!hasNextPage || isFetchingNextPage}>
       {isFetchingNextPage ? <Loader2 className="animate-spin" /> : "Load more"}
     </Button>
   );

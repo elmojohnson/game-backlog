@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 export default function useGames() {
   // List
   async function queryGameList({ pageParam }: { pageParam: number }): Promise<GameList> {
-    const result = await rawgApi.get("/games?page=" + pageParam);
+    const result = await rawgApi.get("/games?page_size=10&page=" + pageParam);
     return result.data;
   }
 

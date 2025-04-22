@@ -17,7 +17,7 @@ export default function BrowseGameItem({ game }: { game: Game }) {
     <GameItem
       game={game}
       actionButtons={[
-        <Button size="sm" onClick={handleAddGame}>
+        <Button size="sm" variant="secondary" onClick={handleAddGame}>
           <Plus />
           Backlog
         </Button>,
