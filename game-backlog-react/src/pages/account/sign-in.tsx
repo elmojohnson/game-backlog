@@ -45,7 +45,7 @@ export default function SignIn() {
                         <FormControl>
                           <Input type="email" placeholder="Email" data-testid="email-input" {...field} disabled={form.formState.isSubmitting} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage data-testid="email-error-message"/>
                       </FormItem>
                     );
                   }}
@@ -60,7 +60,7 @@ export default function SignIn() {
                         <FormControl>
                           <Input type="password" placeholder="Password" data-testid="password-input" {...field} disabled={form.formState.isSubmitting} />
                         </FormControl>
-                        <FormMessage />
+                        <FormMessage data-testid="password-error-message"/>
                       </FormItem>
                     );
                   }}
@@ -69,7 +69,7 @@ export default function SignIn() {
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
                     <AlertTitle>Error</AlertTitle>
-                    <AlertDescription>{form.formState.errors.root?.message}</AlertDescription>
+                    <AlertDescription data-testid="error-alert">{form.formState.errors.root?.message}</AlertDescription>
                   </Alert>
                 ) : null}
                 <div className="flex flex-col gap-2">
