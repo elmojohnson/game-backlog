@@ -3,8 +3,6 @@ name: Extract and Save Netlify Preview URL
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
 
 jobs:
   extract_and_save_preview_url:
