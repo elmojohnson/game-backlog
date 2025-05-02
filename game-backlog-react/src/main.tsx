@@ -58,7 +58,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-// Test
+
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
     <QueryClientProvider client={queryClient}>
