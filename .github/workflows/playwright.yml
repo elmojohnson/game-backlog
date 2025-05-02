@@ -23,7 +23,6 @@ jobs:
           echo "Netlify Preview URL is: $PREVIEW_URL"
           echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
 
-    steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
