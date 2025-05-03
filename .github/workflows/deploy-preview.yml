@@ -32,6 +32,7 @@ jobs:
 
       - name: Deploy to Netlify as Preview
         working-directory: ./game-backlog-react
+        id: deploy
         run: |
           netlify deploy \
             --dir=dist \
