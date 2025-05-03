@@ -1,0 +1,73 @@
+name: Deploy React App to Netlify
+
+on:
+  workflow_call:
+
+jobs:
+  build-and-deploy:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: ./game-backlog-react
+        run: npm install
+
+      - name: Build React Vite app
+        working-directory: ./game-backlog-react
+        run: npm run build
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Deploy to Netlify as Preview
+        id: deploy
+        working-directory: ./game-backlog-react
+        run: |
+          echo "AUTH TOKEN = ${{ secrets.NETLIFY_AUTH_TOKEN }}"
+
+          set -e
+
+          echo "Deploying to Netlify..."
+          deploy_output=$(netlify deploy \
+            --dir=dist \
+            --site=$NETLIFY_SITE_ID \
+            --auth=$NETLIFY_AUTH_TOKEN \
+            --message="Deploy from GitHub Actions ($GITHUB_SHA)" \
+            --json \
+            --alias="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}")
+
+          echo "Raw deploy output:"
+          echo "$deploy_output"
+
+          preview_url=$(echo "$deploy_output" | jq -r '.deploy_url')
+
+          if [ -z "$preview_url" ]; then
+            echo "❌ Failed to extract deploy_url from Netlify output"
+            exit 1
+          fi
+
+          echo "✅ Preview URL: $preview_url"
+          echo "$preview_url" > preview_url.txt
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Upload preview URL as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-url
+          path: ./game-backlog-react/preview_url.txt
+
+      - name: Debug Check preview_url.txt exists
+        run: |
+          echo "Listing files:"
+          find . -name "preview_url.txt" || echo "File not found"
