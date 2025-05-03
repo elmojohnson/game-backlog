@@ -1,31 +1,22 @@
 name: Playwright Tests
 
 on:
-  workflow_run:
-    workflows: ["Deploy React App to Netlify"]
-    types:
-      - completed
+  workflow_call:
+    inputs:
+      preview_url:
+        required: true
+        type: string
 
 jobs:
   test:
-    needs: build-and-deploy
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download preview URL artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: preview-url
-
-      - name: Read preview URL
-        id: read_url
-        run: |
-          PREVIEW_URL=$(cat preview_url.txt)
-          echo "Preview URL: $PREVIEW_URL"
-          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+      - name: Set preview URL
+        run: echo "PREVIEW_URL=${{ inputs.preview_url }}" >> $GITHUB_ENV
 
       - uses: actions/setup-node@v4
         with:
