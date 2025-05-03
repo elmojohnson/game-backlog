@@ -54,7 +54,7 @@ jobs:
       - name: Upload preview URL as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: preview_url
+          name: preview-url
           path: preview_url.txt
 
   test:
@@ -68,7 +68,7 @@ jobs:
       - name: Download preview URL artifact
         uses: actions/download-artifact@v4
         with:
-          name: preview_url
+          name: preview-url
 
       - name: Read preview URL
         id: read_url
