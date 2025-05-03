@@ -6,9 +6,9 @@ on:
       - '**'
 
 jobs:
-  deploy-preview:
+  deploy:
     uses: ./.github/workflows/deploy-preview.yml
 
-  playwright-test:
-    needs: deploy-preview
+  test:
+    needs: deploy
     uses: ./.github/workflows/playwright-test.yml
