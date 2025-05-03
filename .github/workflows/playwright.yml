@@ -1,35 +1,42 @@
 name: Playwright Tests
 
 on:
-  workflow_dispatch: {}
-  
+  workflow_run:
+    workflows: ["Deploy React App to Netlify"]
+    types:
+      - completed
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get the deploy preview URL
+        id: preview_url
+        run: |
+          # Get the URL from the first job's output (Netlify deploy job)
+          preview_url=$(echo "${{ github.event.workflow_run.conclusion }}" | jq -r '.status_url')
+          echo "Preview URL: $preview_url"
+          echo "::set-output name=preview_url::$preview_url"
+
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
       - name: Install dependencies
-        run: |
-          cd playwright
-          npm ci
+        working-directory: ./playwright
+        run: npm ci
 
       - name: Install Playwright Browsers
-        run: |
-          cd playwright
-          npx playwright install --with-deps
+        working-directory: ./playwright
+        run: npx playwright install --with-deps
           
       - name: Run Playwright tests
-        # env:
-        #   PREVIEW_BASE_URL: ${{ steps.get-url.outputs.preview_url }}
-        run: |
-          cd playwright
-          npx playwright test
+        env:
+          PREVIEW_BASE_URL: ${{ steps.preview_url.outputs.preview_url }}
+        working-directory: ./playwright
+        run: npx playwright test
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
