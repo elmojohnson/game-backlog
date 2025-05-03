@@ -11,14 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get the deploy preview URL
-        id: preview_url
-        run: |
-          # Get the URL from the first job's output (Netlify deploy job)
-          preview_url=$(echo "${{ github.event.workflow_run.conclusion }}" | jq -r '.status_url')
-          echo "Preview URL: $preview_url"
-          echo "::set-output name=preview_url::$preview_url"
-
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -33,10 +25,19 @@ jobs:
         run: npx playwright install --with-deps
           
       - name: Run Playwright tests
-        env:
-          PREVIEW_BASE_URL: ${{ steps.preview_url.outputs.preview_url }}
+        # env:
+        #   PREVIEW_BASE_URL: ${{ steps.preview_url.outputs.preview_url }}
         working-directory: ./playwright
-        run: npx playwright test
+        run: |
+          echo "Preview URL: ${{ github.event.workflow_run.conclusion }}"
+          echo "Using Preview URL: ${{ github.event.workflow_run.outputs.preview_url }}"
+          
+          # Ensure Preview URL is available
+          export BASE_URL="${{ github.event.workflow_run.outputs.preview_url }}"
+          echo "Base URL: $BASE_URL"
+
+          # Run Playwright tests using the preview URL
+          npx playwright test --project=your-project --base-url=$BASE_URL
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
