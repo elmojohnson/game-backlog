@@ -40,13 +40,13 @@ jobs:
             --message="Deploy from GitHub Actions ($GITHUB_SHA)" \
             --json \
             --alias="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+        id: deploy
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Set Preview URL as Output
-        id: preview_url
         run: |
-          preview_url=$(echo "${{ steps.deploy.outputs.deploy_url }}" | jq -r '.deploy.preview_url')
+          preview_url=$(echo "${{ steps.deploy.outputs.deploy-preview-url }}" | jq -r '.deploy.preview_url')
           echo "Preview URL: $preview_url"
-          echo "::set-output name=preview_url::$preview_url"
+          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
