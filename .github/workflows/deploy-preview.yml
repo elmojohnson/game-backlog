@@ -47,6 +47,6 @@ jobs:
 
       - name: Set Preview URL as Output
         run: |
-          preview_url=$(echo "${{ steps.deploy.outputs.deploy-preview-url }}" | jq -r '.deploy.preview_url')
+          preview_url=$(echo "${{ steps.deploy.outputs.deploy_url }}" | jq -r '.deploy.preview_url')
           echo "Preview URL: $preview_url"
           echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
