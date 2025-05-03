@@ -56,7 +56,7 @@ jobs:
           fi
 
           echo "✅ Preview URL: $preview_url"
-          echo "$preview_url" > ../../preview_url.txt
+          echo "$preview_url" > preview_url.txt
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
