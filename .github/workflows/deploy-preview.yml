@@ -23,6 +23,9 @@ jobs:
         working-directory: ./game-backlog-react
         run: npm run build
 
+      - name: List build output (for debugging)
+        run: ls -la ./game-backlog-react/build
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
