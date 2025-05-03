@@ -1,10 +1,9 @@
 name: Deploy React App to Netlify
 
 on:
-  push:
+  pull_request:
     branches:
       - '**'
-  pull_request:
 
 jobs:
   build-and-deploy:
