@@ -68,7 +68,7 @@ jobs:
       - name: Download preview URL artifact
         uses: actions/download-artifact@v4
         with:
-          name: preview-url
+          name: preview_url
 
       - name: Read preview URL
         id: read_url
