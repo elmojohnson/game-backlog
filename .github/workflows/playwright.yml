@@ -1,45 +1,32 @@
 name: Playwright Tests
 
 on:
-  workflow_run:
-  workflows: ["Extract and Save Netlify Preview URL"]
-  types:
-    - completed
-
+  workflow_dispatch: {}
+  
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download Netlify Preview URL Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: netlify-preview-url
-          path: ./tmp
-
-      - name: Read Preview URL
-        id: get-url
-        run: |
-          PREVIEW_URL=$(cat ./tmp/preview-url.txt)
-          echo "Netlify Preview URL is: $PREVIEW_URL"
-          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
-
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
       - name: Install dependencies
         run: |
           cd playwright
           npm ci
+
       - name: Install Playwright Browsers
         run: |
           cd playwright
           npx playwright install --with-deps
+          
       - name: Run Playwright tests
-        env:
-          PREVIEW_BASE_URL: ${{ steps.get-url.outputs.preview_url }}
+        # env:
+        #   PREVIEW_BASE_URL: ${{ steps.get-url.outputs.preview_url }}
         run: |
           cd playwright
           npx playwright test
