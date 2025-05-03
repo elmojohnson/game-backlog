@@ -62,10 +62,11 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Upload preview URL as artifact
+        working-directory: ${{ github.workspace }}
         uses: actions/upload-artifact@v4
         with:
           name: preview-url
-          path: ./game-backlog-react/preview_url.txt
+          path: preview_url.txt
 
   test:
     needs: build-and-deploy
