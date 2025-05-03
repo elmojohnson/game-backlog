@@ -34,20 +34,21 @@ jobs:
         working-directory: ./game-backlog-react
         id: deploy
         run: |
-          netlify deploy \
+          deploy_output=$(netlify deploy \
             --dir=dist \
             --site=$NETLIFY_SITE_ID \
             --auth=$NETLIFY_AUTH_TOKEN \
             --message="Deploy from GitHub Actions ($GITHUB_SHA)" \
             --json \
-            --alias="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+            --alias="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}")
+        echo "Deploy output: $deploy_output"
+          preview_url=$(echo "$deploy_output" | jq -r '.deploy.preview_url')
+          echo "Preview URL: $preview_url"
+          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-      - name: Set Preview URL as Output
-        id: preview_url
+      - name: Debug Output
         run: |
-          preview_url=$(echo "${{ steps.deploy.outputs.deploy_url }}" | jq -r '.deploy.preview_url')
-          echo "Preview URL: $preview_url"
-          echo "::set-output name=preview_url::$preview_url"
+          echo "Preview URL set as: ${{ env.PREVIEW_URL }}"
