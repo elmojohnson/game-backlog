@@ -32,6 +32,8 @@ jobs:
         id: deploy
         working-directory: ./game-backlog-react
         run: |
+          echo "AUTH TOKEN = ${{ secrets.NETLIFY_AUTH_TOKEN }}"
+
           set -e
 
           echo "Deploying to Netlify..."
