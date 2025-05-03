@@ -56,3 +56,50 @@ jobs:
         with:
           name: preview-url
           path: preview_url.txt
+
+  test:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download preview URL artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: preview-url
+
+      - name: Read preview URL
+        id: read_url
+        run: |
+          PREVIEW_URL=$(cat preview_url.txt)
+          echo "Preview URL: $PREVIEW_URL"
+          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_ENV
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        working-directory: ./playwright
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        working-directory: ./playwright
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        working-directory: ./playwright
+        env:
+          BASE_URL: ${{ env.PREVIEW_URL }}
+        run: |
+          echo "Running tests against $BASE_URL"
+          npx playwright test --project=chromium --base-url=$BASE_URL
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
