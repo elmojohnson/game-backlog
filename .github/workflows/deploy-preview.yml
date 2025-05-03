@@ -54,7 +54,7 @@ jobs:
       - name: Upload preview URL as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: preview-url
+          name: preview_url
           path: preview_url.txt
 
   test:
