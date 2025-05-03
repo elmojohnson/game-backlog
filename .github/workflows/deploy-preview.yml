@@ -16,19 +16,17 @@ jobs:
           node-version: '18'  # Use your app's Node version
 
       - name: Install dependencies
-        run: |
-          cd game-backlog-react
-          npm install
+        working-directory: ./game-backlog-react
+        run: npm install
 
       - name: Build React app
-        run: |
-          cd game-backlog-react
-          npm run build
+        working-directory: ./game-backlog-react
+        run: npm run build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: ./build
+          publish-dir: ./game-backlog-react/build
           production-branch: main
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
