@@ -47,6 +47,6 @@ jobs:
       - name: Set Preview URL as Output
         id: preview_url
         run: |
-          preview_url=$(echo "${{ steps.deploy-preview.outputs.deploy_url }}" | jq -r '.deploy.preview_url')
+          preview_url=$(echo "${{ steps.deploy.outputs.deploy_url }}" | jq -r '.deploy.preview_url')
           echo "Preview URL: $preview_url"
           echo "::set-output name=preview_url::$preview_url"
