@@ -34,6 +34,9 @@ jobs:
         id: deploy
         working-directory: ./game-backlog-react
         run: |
+          set -e
+
+          echo "Deploying to Netlify..."
           deploy_output=$(netlify deploy \
             --dir=dist \
             --site=$NETLIFY_SITE_ID \
@@ -42,17 +45,24 @@ jobs:
             --json \
             --alias="${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}")
 
+          echo "Raw deploy output:"
           echo "$deploy_output"
 
           preview_url=$(echo "$deploy_output" | jq -r '.deploy_url')
-          echo "Preview URL: $preview_url"
-          echo "$preview_url" > preview_url.txt
+
+          if [ -z "$preview_url" ]; then
+            echo "❌ Failed to extract deploy_url from Netlify output"
+            exit 1
+          fi
+
+          echo "✅ Preview URL: $preview_url"
+          echo "$preview_url" > ../../preview_url.txt
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Upload preview URL as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: preview-url
           path: preview_url.txt
@@ -66,7 +76,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download preview URL artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v3.1.0
         with:
           name: preview-url
 
@@ -95,7 +105,7 @@ jobs:
           BASE_URL: ${{ env.PREVIEW_URL }}
         run: |
           echo "Running tests against $BASE_URL"
-          npx playwright test --project=chromium --base-url=$BASE_URL
+          npx playwright test --base-url="$BASE_URL"
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
