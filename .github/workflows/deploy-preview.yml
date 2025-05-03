@@ -67,6 +67,11 @@ jobs:
           name: preview-url
           path: preview_url.txt
 
+      - name: Debug Check preview_url.txt exists
+        run: |
+          echo "Listing files:"
+          find . -name "preview_url.txt" || echo "File not found"
+
   test:
     needs: build-and-deploy
     runs-on: ubuntu-latest
