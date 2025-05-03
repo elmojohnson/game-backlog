@@ -107,10 +107,10 @@ jobs:
       - name: Run Playwright tests
         working-directory: ./playwright
         env:
-          BASE_URL: ${{ env.PREVIEW_URL }}
+          PREVIEW_BASE_URL: ${{ env.PREVIEW_URL }}
         run: |
-          echo "Running tests against $BASE_URL"
-          npx playwright test --base-url="$BASE_URL"
+          echo "Running tests against $PREVIEW_BASE_URL"
+          npx playwright test
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
