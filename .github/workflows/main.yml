@@ -1,0 +1,14 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  deploy-preview:
+    uses: ./.github/workflows/deploy-preview.yml
+
+  playwright-test:
+    needs: deploy
+    uses: ./.github/workflows/playwright-test.yml
