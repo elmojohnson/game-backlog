@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: preview-url
-          path: ./playwright/preview_url.txt
+          path: ./game-backlog-react/preview_url.txt
 
   test:
     needs: build-and-deploy
