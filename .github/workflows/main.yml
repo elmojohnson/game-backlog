@@ -10,5 +10,5 @@ jobs:
     uses: ./.github/workflows/deploy-preview.yml
 
   playwright-test:
-    needs: deploy
+    needs: deploy-preview
     uses: ./.github/workflows/playwright-test.yml
