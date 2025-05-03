@@ -1,24 +1,27 @@
-name: 'Netlify Preview Deploy'
-
-on: [push]
-
+# .github/workflows/netlify.yml
+name: Build and Deploy to Netlify
+on:
+  push:
+  pull_request:
 jobs:
-  deploy:
-    name: 'Deploy'
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: jsmrcaga/action-netlify-deploy@v2.4.0
+      - uses: actions/checkout@v4
+
+      # ( Build to ./dist or other directory... )
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
         with:
+          publish-dir: './game-backlog-react/dist'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          
-      # Creates a status check with link to preview
-      - name: Status check
-        uses: Sibz/github-status-action@v1.1.1
-        with:
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: Netlify preview
-          state: success
-          target_url: ${{ env.NETLIFY_PREVIEW_URL }}
+        timeout-minutes: 1
