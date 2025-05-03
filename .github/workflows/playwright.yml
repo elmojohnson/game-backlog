@@ -1,8 +1,11 @@
 name: Playwright Tests
 
 on:
-  workflow_dispatch: {}
-  
+  workflow_run:
+  workflows: ["Extract and Save Netlify Preview URL"]
+  types:
+    - completed
+
 jobs:
   test:
     timeout-minutes: 60
