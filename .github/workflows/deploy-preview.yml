@@ -16,10 +16,14 @@ jobs:
           node-version: '18'  # Use your app's Node version
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd game-backlog-react
+          npm install
 
       - name: Build React app
-        run: npm run build
+        run: |
+          cd game-backlog-react
+          npm run build
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
