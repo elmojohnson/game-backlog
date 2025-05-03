@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Use your app's Node version
+          node-version: '18'
 
       - name: Install dependencies
         working-directory: ./game-backlog-react
@@ -31,8 +31,8 @@ jobs:
         run: npm install -g netlify-cli
 
       - name: Deploy to Netlify as Preview
-        working-directory: ./game-backlog-react
         id: deploy
+        working-directory: ./game-backlog-react
         run: |
           deploy_output=$(netlify deploy \
             --dir=dist \
@@ -46,16 +46,12 @@ jobs:
 
           preview_url=$(echo "$deploy_output" | jq -r '.deploy_url')
           echo "Preview URL: $preview_url"
-
-          echo "PREVIEW_URL=$preview_url" >> $GITHUB_ENV
+          echo "$preview_url" > preview_url.txt
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-      - name: Save preview URL to file
-        run: echo "$preview_url" > preview_url.txt
-
-      - name: Upload preview URL artifact
+      - name: Upload preview URL as artifact
         uses: actions/upload-artifact@v3
         with:
           name: preview-url
